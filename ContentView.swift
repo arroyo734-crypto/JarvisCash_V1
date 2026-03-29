@@ -1,0 +1,2 @@
+import SwiftUI
+struct ContentView: View { @StateObject var db = DatabaseManager.shared; var body: some View { NavigationView { VStack(spacing: 50) { Button(action: { print(\"Add Revenue triggered\") }) { VStack { Image(systemName: \"plus.circle.fill\").font(.system(size: 80)); Text(\"Add $10 Revenue\").fontWeight(.bold) } } NavigationLink(destination: Text(\"Premium Stats\")) { HStack { Image(systemName: \"crown.fill\"); Text(\"Unlock Premium\") }.padding().background(Color.yellow).cornerRadius(10).foregroundColor(.black) } }.navigationTitle(\"Jarvis Cash 2.0\") } } }
