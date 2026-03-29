@@ -1,1 +1,44 @@
-<html><head><title>Jarvis Cash</title><style>body{background:#111;color:#fff;font-family:sans-serif;text-align:center;padding-top:50px}.btn{font-size:50px;background:none;border:none;cursor:pointer}.crown{color:gold;font-size:30px}</style></head><body><h1>Jarvis Cash 2.0</h1><button class='btn' onclick='addRev()'>?</button><p>Add  Revenue</p><br><div class='crown'>?? Premium Stats</div><script>function addRev(){ let rev = localStorage.getItem('rev') || 0; rev = parseFloat(rev) + 10; localStorage.setItem('rev', rev); alert('Total Revenue: $' + rev); }</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jarvis Cash 2.0</title>
+    <!-- Connects your dashboard to the Blockchain -->
+    <script src="https://cdnjs.cloudflare.com"></script>
+    <style>
+        body { background: #000; color: #00ff41; font-family: -apple-system, sans-serif; text-align: center; padding-top: 50px; }
+        .btn { font-size: 80px; background: none; border: none; cursor: pointer; display: block; margin: 0 auto; }
+        .rev-text { font-size: 32px; font-weight: bold; margin-top: 20px; color: #fff; border: 2px solid #00ff41; display: inline-block; padding: 10px; border-radius: 10px; }
+        .crown { color: gold; font-size: 24px; margin-top: 60px; border: 2px solid gold; padding: 15px; display: inline-block; border-radius: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>JARVIS CASH 2.0</h1>
+    <button class="btn" onclick="addRev()">➕</button>
+    <div id="counter" class="rev-text">CASH: $0</div>
+    <br>
+    <div class="crown" onclick="connectWallet()">👑 CONNECT CRYPTO WALLET</div>
+
+    <script>
+        let total = localStorage.getItem('rev') || 0;
+        document.getElementById('counter').innerText = 'CASH: $' + total;
+
+        function addRev() {
+            total = parseFloat(total) + 10;
+            localStorage.setItem('rev', total);
+            document.getElementById('counter').innerText = 'CASH: $' + total;
+        }
+
+        async function connectWallet() {
+            if (window.ethereum) {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    alert("Wallet Linked: " + accounts[0].substring(0,6) + "...");
+                    document.querySelector('.crown').innerText = "💎 WALLET ACTIVE";
+                } catch (e) { alert("Connection Denied"); }
+            } else { alert("MetaMask not found! Open this in your Wallet Browser."); }
+        }
+    </script>
+</body>
+</html>
