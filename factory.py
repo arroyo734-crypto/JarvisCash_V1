@@ -1,36 +1,13 @@
-code = '''import SwiftUI
-import WidgetKit
+import requests
+import json
+def generate(niche):
+    print(f'?? Brainstorming: {niche}...')
+    data = {'model': 'deepseek-r1:8b', 'prompt': f'Output ONLY raw SwiftUI for a {niche} widget.', 'stream': False}
+    resp = requests.post('http://localhost:11434/api/generate', json=data).json()
+    full = resp['response']
+    if '</think>' in full: full = full.split('</think>')[-1]
+    with open(f'{niche}.swift', 'w', encoding='utf-8') as f: f.write(full.strip())
+    print(f'? {niche} Done!')
 
-struct ZenWidgetEntry: TimelineEntry {
-    let date: Date
-    let quote: String
-}
-
-struct ZenWidgetEntryView : View {
-    var entry: ZenWidgetEntry
-    var body: some View {
-        VStack {
-            Text('FOCUS').font(.caption).foregroundColor(.secondary)
-            Text(entry.quote).font(.system(size: 14, weight: .medium)).padding(4)
-        }
-    }
-}
-
-@main
-struct ZenWidget: Widget {
-    var body: some WidgetConfiguration {
-        StaticConfiguration(kind: 'ZenWidget', provider: Provider()) { entry in
-            ZenWidgetEntryView(entry: entry)
-        }.supportedFamilies([.systemSmall])
-    }
-}
-
-struct Provider: TimelineProvider {
-    func placeholder(in c: Context) -> ZenWidgetEntry { ZenWidgetEntry(date: Date(), quote: 'Stay Present.') }
-    func getSnapshot(in c: Context, completion: @escaping (ZenWidgetEntry) -> ()) { completion(ZenWidgetEntry(date: Date(), quote: 'Stay Present.')) }
-    func getTimeline(in c: Context, completion: @escaping (Timeline<ZenWidgetEntry>) -> ()) { completion(Timeline(entries: [ZenWidgetEntry(date: Date(), quote: 'Deep Work.')], policy: .atEnd)) }
-}'''
-
-with open('ZenWidget.swift', 'w') as f:
-    f.write(code)
-print('? ZenWidget.swift created successfully!')
+apps = ['Todo_Widget', 'Step_Counter', 'Gratitude_Log', 'Pomodoro_Timer']
+for a in apps: generate(a)
